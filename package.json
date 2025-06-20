@@ -1,0 +1,23 @@
+{
+  "name": "bot-betzod",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "wpp": "node --watch ./whatsapp/index.js",
+    "start": "node --watch ./main/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "playwright": "^1.53.0",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.30.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.0",
+    "@types/node": "^24.0.3"
+  }
+}
