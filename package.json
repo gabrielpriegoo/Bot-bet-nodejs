@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "wpp": "node --watch ./whatsapp/index.js",
+    "wpp": "node --watch ./whatsapp/example.js",
     "start": "node --watch ./main/index.js"
   },
   "keywords": [],
