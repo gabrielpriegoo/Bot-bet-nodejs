@@ -1,4 +1,5 @@
 const { chromium } = require("playwright");
+require("dotenv").config();
 const fs = require("fs");
 
 (async () => {
@@ -10,8 +11,8 @@ const fs = require("fs");
   // Loga no site com credenciais HTTP
   const context = await browser.newContext({
     httpCredentials: {
-      username: "",
-      password: "",
+      username: process.env.USER_NAME,
+      password: process.env.USER_PASSWORD,
     },
   });
 
@@ -19,7 +20,7 @@ const fs = require("fs");
   const page = await context.newPage();
 
   // Intercepta requisições para evitar bloqueios
-  await page.goto("", {
+  await page.goto(process.env.URL_SITE, {
     waitUntil: "domcontentloaded",
   });
 
