@@ -35,11 +35,6 @@ const fs = require("fs");
     .getByRole("button", { name: "⚽ Times" })
     .click();
   await page.waitForLoadState("networkidle");
-  // await page
-  //   .locator("#iframe")
-  //   .contentFrame()
-  //   .getByRole("button", { name: "💰 Odds" })
-  //   .click();
 
   // Aguarda o iframe carregar
   const tabelaLocator = page
@@ -135,42 +130,54 @@ const fs = require("fs");
       }
     });
 
-    return dados[0];
+    return dados;
   });
 
-  // console.log(JSON.stringify(resultados, null, 2));
-  console.log("📊 Dados capturados", resultados);
+  // Lógica de Análise
+  const linha0 = resultados[0];
+  const linha4 = resultados[4];
 
-  // ✅ LÓGICA DE ANÁLISE
-  // const sinais = resultados
-  //   .filter((linha) => {
-  //     const greens = linha.dados.filter((d) => d.status === "green").length;
-  //     const total = linha.dados.length;
-  //     const percentualGreen = total > 0 ? (greens / total) * 100 : 0;
+  if (!linha0 || !linha4) {
+    console.log("❌ Linhas necessárias não existem.");
+    process.exit(1);
+  }
 
-  //     // Filtro mais flexível: Permitindo qualquer valor de percentualGreen
-  //     return percentualGreen >= 50 && linha.jogosFuturos.length > 0;
-  //   })
-  //   .map((linha) => {
-  //     const greens = linha.dados.filter((d) => d.status === "green").length;
-  //     const reds = linha.dados.filter((d) => d.status === "red").length;
-  //     const total = linha.dados.length;
-  //     const percentualGreen = ((greens / total) * 100).toFixed(2);
+  // 1. Jogos com >= 5 gols na linha 4
+  const resultInGames = linha4.data.filter((item) => {
+    const [score1, score2] = item.placar.split("-").map(Number);
+    const totalGoals = score1 + score2;
+    return totalGoals >= 5;
+  });
 
-  //     return {
-  //       jogo: linha.jogosFuturos.join(", "), // Lista de jogos futuros
-  //       linha: linha.linha,
-  //       greens,
-  //       reds,
-  //       total,
-  //       percentualGreen,
-  //     };
-  //   });
+  // 2. Jogos futuros na linha 0
+  const jogosFuturos = linha0.data.filter((item) => {
+    return item.status === "" && item.placar === "";
+  });
 
-  // ✅ SALVA EM ARQUIVO
-  // fs.writeFileSync("./sinais.json", JSON.stringify(sinais, null, 2));
+  // 3. Verifica matches baseados no hMin
+  let matches = jogosFuturos.filter((futuro) =>
+    resultInGames.some((passado) => passado.hMin === futuro.hMin)
+  );
 
-  // console.log("💾 Arquivo sinais.json gerado com sucesso", sinais);
+  // 4. Remove duplicatas por chave única
+  const uniqueMatchesMap = new Map();
 
+  matches.forEach((jogo) => {
+    const chaveUnica = `${jogo.times}-${jogo.hMin}-${jogo.league}`;
+    if (!uniqueMatchesMap.has(chaveUnica)) {
+      uniqueMatchesMap.set(chaveUnica, jogo);
+    }
+  });
+
+  const sinais = Array.from(uniqueMatchesMap.values());
+
+  // 5. Exibe e salva
+  if (sinais.length > 0) {
+    console.log("🎯 Sinais únicos encontrados:", sinais);
+    fs.writeFileSync("./sinais.json", JSON.stringify(sinais, null, 2));
+    console.log("💾 Arquivo sinais.json gerado com sucesso.");
+  } else {
+    console.log("⚠️ Nenhum sinal encontrado.");
+  }
   // await browser.close();
 })();

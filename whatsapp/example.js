@@ -28,20 +28,22 @@ client.on("ready", async () => {
   }
 
   // 🚧 Verifica se tem sinais
-  if (sinais.length === 0) {
+  if (!sinais || sinais.length === 0) {
     console.log("🚫 Nenhum sinal para enviar.");
     return;
   }
 
   // 📤 Monta mensagem
   let mensagem = "⚽️ *ENTRADAS ENCONTRADAS* ⚽️\n\n";
-  sinais.forEach((sinal) => {
-    mensagem += `🎯 *Jogo:* ${sinal.jogo}\n`;
-    mensagem += `📊 *Linha:* ${sinal.linha}\n`;
-    mensagem += `✅ *Green:* ${sinal.greens} | ❌ *Red:* ${sinal.reds}\n`;
-    mensagem += `🔥 *% Green:* ${sinal.percentualGreen}%\n`;
-    mensagem += `━━━━━━━━━━━━━━\n`;
-  });
+
+  // Pega o primeiro objeto da lista de sinais
+  const primeiroSinal = sinais[(0, 1)]; // Acesse o primeiro objeto no array sinais
+
+  // Agora monta a mensagem com as informações do primeiro sinal
+  mensagem += `🏆 *Liga:* ${primeiroSinal.league}\n`;
+  mensagem += `🎯 *Jogo:* ${primeiroSinal.times}\n`;
+  mensagem += `⏰ *Minutos:* ${primeiroSinal.hMin}\n`;
+  mensagem += `━━━━━━━━━━━━━━\n`;
 
   console.log("📨 Enviando mensagem...");
 
