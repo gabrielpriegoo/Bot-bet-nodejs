@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "wpp": "node --watch ./whatsapp/example.js",
-    "start": "node --watch ./main/index.js"
+    "start": "node --watch ./src/main/index.js"
   },
   "keywords": [],
   "author": "",

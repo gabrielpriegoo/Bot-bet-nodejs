@@ -9,7 +9,7 @@ class PlaywrightScraper {
   async extracRawTable() {
     const browser = await chromium.launch({
       headless: false,
-      args: ["--disable-blink-features=AutomationControlled"],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const context = await browser.newContext({
