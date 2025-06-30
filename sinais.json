@@ -1,18 +1,9 @@
 [
   {
-    "jogo": "61, 65%",
-    "linha": "7",
-    "greens": 13,
-    "reds": 7,
-    "total": 22,
-    "percentualGreen": "59.09"
-  },
-  {
-    "jogo": "45, 55%",
-    "linha": "5",
-    "greens": 11,
-    "reds": 9,
-    "total": 22,
-    "percentualGreen": "50.00"
+    "league": "Euro",
+    "times": "Switz x Germa",
+    "placar": "",
+    "hMin": "20",
+    "status": ""
   }
 ]
